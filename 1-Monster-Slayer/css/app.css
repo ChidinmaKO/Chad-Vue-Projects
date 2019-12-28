@@ -35,12 +35,12 @@
     margin: 5px;
 }
 
-.log ul .player-turn {
+.log ul .player-log {
     color: blue;
     background-color: #e4e8ff;
 }
 
-.log ul .monster-turn {
+.log ul .monster-log {
     color: red;
     background-color: #ffc0c1;
 }
