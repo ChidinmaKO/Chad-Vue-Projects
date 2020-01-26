@@ -1,4 +1,4 @@
-# vue-cli
+# simple-component-usage
 
 > A Vue.js project
 
