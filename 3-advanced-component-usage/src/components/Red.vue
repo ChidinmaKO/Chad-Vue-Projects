@@ -1,5 +1,12 @@
 <template>
-    <div></div>
+    <div>
+        <slot name="title"></slot>
+        <small><em><slot name="subtitle">The Subtitle</slot></em></small>
+        <hr>
+        <span>
+            <slot></slot>
+        </span>
+    </div>
 </template>
 
 <script>
