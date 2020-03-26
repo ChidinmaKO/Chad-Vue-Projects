@@ -7,7 +7,9 @@ Vue.filter('toUpperCase', (value) => {
 Vue.filter('toLowerCase', function(value) {
   return !value ? '' : value.toLowerCase();
 })
-
+Vue.filter('countLength', (value) => {
+  return !value ? '' : value + " (" + value.length + ")";
+})
 
 new Vue({
   el: '#app',
