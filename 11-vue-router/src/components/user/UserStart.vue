@@ -3,9 +3,19 @@
         <p>Please select a User</p>
         <hr>
         <ul class="list-group">
-            <li class="list-group-item" style="cursor: pointer">User 1</li>
-            <li class="list-group-item" style="cursor: pointer">User 2</li>
-            <li class="list-group-item" style="cursor: pointer">User 3</li>
+            <routerLink to="/user/1" class="list-group-item" tag="li" style="cursor: pointer">User 1</routerLink>
+            <routerLink to="/user/2" class="list-group-item" tag="li" style="cursor: pointer">User 2</routerLink>
+            <routerLink to="/user/3" class="list-group-item" tag="li" style="cursor: pointer">User 3</routerLink>
         </ul>
     </div>
 </template>
+
+<script>
+    export default {
+        data() {
+            return {
+                routeId: this.$route.params.id
+            }
+        },
+    }
+</script>
