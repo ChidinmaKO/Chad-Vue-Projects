@@ -26,6 +26,7 @@
     import AnotherCounter from './components/AnotherCounter.vue';
     import Result from './components/Result.vue';
     import AnotherResult from './components/AnotherResult.vue';
+    import namespace from '../src/store/namespace';
 
     export default {
         components: {
@@ -36,20 +37,20 @@
         },
         computed: {
             // value() {
-            //     return this.$store.getters.value;
+            //     return this.$store.getters[namespace.VALUE];
             // },
             secondValue: {
                 get() {
-                    return this.$store.getters.value;
+                    return this.$store.getters[namespace.VALUE];
                 },
                 set(secondValue) {
-                    return this.$store.dispatch('updateValue', secondValue);
+                    return this.$store.dispatch(namespace.UPDATE_VALUE, secondValue);
                 }
             }
         },
         // methods: {
         //     updateValue(event) {
-        //         return this.$store.dispatch('updateValue', event.target.value);
+        //         return this.$store.dispatch(namespace.UPDATE_VALUE, event.target.value);
         //     }
         // },
     }

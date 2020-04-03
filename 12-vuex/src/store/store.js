@@ -1,55 +1,30 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import counterStore from './modules/counter';
+import namespace from './namespace';
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        counter: 0,
         value: 0
     },
     getters: {
-        doubleCounter: state => {
-            return state.counter * 2;
-        },
-        stringCounter: state => {
-            return state.counter + ' Clicks';
-        },
-        value: state => {
+        [namespace.VALUE]: state => {
             return state.value;
         }
     },
     mutations: {
-        increment: (state, payload) => {
-            state.counter += payload;
-        },
-        decrement: (state, payload) => {
-            state.counter -= payload;
-        },
-        updateValue: (state, payload) => {
+        [namespace.MUTATE_UPDATE_VALUE]: (state, payload) => {
             state.value = payload;
         }
     },
     actions: {
-        increment: ({ commit }, payload) => {
-            commit('increment', payload);
-        },
-        decrement: ({ commit }, payload) => {
-            commit('decrement', payload);
-        },
-        asyncIncrement: ({ commit, state }, payload) => {
-            setTimeout(() => {
-                state.counter += 2;
-                commit('increment', payload);
-            }, 1000)
-        },
-        asyncDecrement: ({ commit }, payload) => {
-            setTimeout(() => {
-                commit('decrement', payload.by);
-            }, payload.duration)
-        },
-        updateValue: ({ commit }, payload) => {
-            commit('updateValue', payload);
+        [namespace.UPDATE_VALUE]: ({ commit }, payload) => {
+            commit(namespace.MUTATE_UPDATE_VALUE, payload);
         }
+    },
+    modules: {
+        counterStore,
     }
 });

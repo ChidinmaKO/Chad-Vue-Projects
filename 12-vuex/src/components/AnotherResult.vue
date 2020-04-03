@@ -10,13 +10,14 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import namespace from '../store/namespace'
 
     export default {
         computed: {
-            ...mapGetters([
-                'doubleCounter',
-                'stringCounter',
-            ])
+            ...mapGetters({
+                doubleCounter: namespace.DOUBLE_COUNTER,
+                stringCounter: namespace.STRING_COUNTER
+            })
         }
     }
 </script>

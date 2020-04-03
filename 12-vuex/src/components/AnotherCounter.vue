@@ -7,13 +7,14 @@
 
 <script>
     import { mapActions } from 'vuex';
+    import namespace from '../store/namespace';
 
     export default {
         methods: {
-            ...mapActions([
-                'asyncIncrement',
-                'asyncDecrement'
-            ])
+            ...mapActions({
+                asyncIncrement: namespace.COUNTER_INCREMENT_ASYNC,
+                asyncDecrement: namespace.COUNTER_DECREMENT_ASYNC
+            })
         }
     }
 </script>

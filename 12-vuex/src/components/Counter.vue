@@ -6,34 +6,15 @@
 </template>
 
 <script>
-    // import { mapMutations } from 'vuex';
     import { mapActions } from 'vuex';
+    import namespace from '../store/namespace';
 
     export default {
         methods: {
-            ...mapActions([
-                'increment',
-                'decrement'
-            ])
-
-            // ...mapMutations([
-            //     'increment',
-            //     'decrement'
-            // ])
-
-            // increment() {
-            //     this.$store.commit('increment');
-            // },
-            // decrement() {
-            //     this.$store.commit('decrement')
-            // }
-            
-            // increment() {
-            //     this.$store.state.counter++;
-            // },
-            // decrement() {
-            //     this.$store.state.counter--;
-            // }
+            ...mapActions({
+                increment: namespace.COUNTER_INCREMENT,
+                decrement: namespace.COUNTER_DECREMENT
+            })
         }
     }
 </script>
