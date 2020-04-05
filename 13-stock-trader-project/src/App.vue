@@ -22,7 +22,10 @@
     export default {
         components: {
             appHeader: Header,
-        }
+        },
+        created() {
+            this.$store.dispatch('setStocks')
+        },
     }
 </script>
 
