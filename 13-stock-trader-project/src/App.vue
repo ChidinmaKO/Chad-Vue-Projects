@@ -24,7 +24,7 @@
             appHeader: Header,
         },
         created() {
-            this.$store.dispatch('setStocks')
+            this.$store.dispatch('initStocks')
         },
     }
 </script>
@@ -33,5 +33,6 @@
     body {
         padding: 30px;
         background-color: #F2F2F2;
+        color: #24243E;
     }
 </style>

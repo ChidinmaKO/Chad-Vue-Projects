@@ -13,12 +13,13 @@ const mutations = {
             quantity: stockQuantity
         });
         record ? (record.quantity += stockQuantity) : pushToPortfolioStocks;
+        console.log(record)
 
         state.funds -= stockPrice * stockQuantity;
     },
     'SELL_STOCK': (state, { stockId, stockPrice, stockQuantity }) => {
         const record = state.portfolioStocks.find(element => element.id === stockId);
-        (record.quantity > stockQuantity) ? (record.quantity -= stockQuantity) : (state.portfolioStocks.splice(state.stocks.indexOf(record)));
+        (record.quantity > stockQuantity) ? (record.quantity -= stockQuantity) : (state.portfolioStocks.splice(state.portfolioStocks.indexOf(record), 1));
 
         state.funds += stockPrice * stockQuantity;
     }

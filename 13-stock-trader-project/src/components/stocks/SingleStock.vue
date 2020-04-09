@@ -49,16 +49,14 @@
                     stockPrice: this.stock.price,
                     stockQuantity: this.quantity
                 };
-                console.log("order: ", order);
+                console.log("stock order: ", order);
+                this.$store.dispatch('buyStock', order)
                 this.quantity = 0;
             },
             disableButton() {
                 // `+` is a handy way of converting the string to an integer. It can be used in place of parseInt(num)
                 return (this.quantity <= 0 || !Number.isInteger(+this.quantity));
             }
-            
-        },
-        computed: {
             
         },
     }

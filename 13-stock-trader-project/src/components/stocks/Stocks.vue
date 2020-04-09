@@ -1,26 +1,38 @@
 <template>
-    <div>
-        <single-stock v-for="stock in stocks" :key="stock.id" :stock="stock"></single-stock>
-    </div>
+  <div>
+      <div class="col-sm-6 col-md-4">
+        <button type="button" class="btn btn-success ">
+            Funds:
+            <span class="badge badge-light">{{ funds }}</span>
+            <span class="sr-only">Amount of funds</span>
+        </button>
+      </div>
+
+    <br><br><br>
+
+    <single-stock v-for="stock in stocks" :key="stock.id" :stock="stock"></single-stock>
+  </div>
 </template>
 
 <script>
-    import SingleStock from './SingleStock.vue';
+    import { mapGetters } from 'vuex';
+    import SingleStock from "./SingleStock.vue";
 
     export default {
-        name: 'Stocks',
+        name: "Stocks",
 
         components: {
-            SingleStock,
+            SingleStock
         },
         computed: {
-            stocks() {
-                return this.$store.getters.stocks;
-            }
+            ...mapGetters({
+                stocks: 'stocks',
+                funds: 'funds'
+            })
+            
         },
-    }
+    };
 </script>
 
 <style scoped>
-    
 </style>
