@@ -31,8 +31,8 @@
                         Save & Load
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Save Data</a></li>
-                            <li><a class="dropdown-item" href="#">Load Data</a></li>
+                            <li><a class="dropdown-item" href="#" @click="saveData()">Save Data</a></li>
+                            <li><a class="dropdown-item" href="#" @click="loadData()">Load Data</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
 
     export default {
         data() {
@@ -51,20 +51,34 @@
             }
         },
         methods: {
-            ...mapActions([
-                'randomizeStocks'
-            ]),
+            ...mapActions({
+                randomizeStocks: 'randomizeStocks',
+                fetchData: 'loadData'
+            }),
             endDay() {
                 this.randomizeStocks();
             },
             toggleDropDown() {
                 this.isDropDownOpen = !this.isDropDownOpen;
+            },
+            saveData() {
+                const finalData = {
+                    funds: this.funds,
+                    stocks: this.stocks,
+                    stockPortfolio: this.stockPortfolio
+                }
+                this.$http.put('data.json', finalData);
+            },
+            loadData() {
+                this.fetchData();
             }
         },
         computed: {
-            funds() {
-                return this.$store.getters.funds;
-            }
+            ...mapGetters({
+                funds: 'funds',
+                stocks: 'stocks',
+                stockPortfolio: 'stockPortfolio',
+            }),
         },
     }
 </script>

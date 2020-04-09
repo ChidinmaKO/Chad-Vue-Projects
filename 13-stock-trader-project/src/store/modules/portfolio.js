@@ -28,6 +28,10 @@ const mutations = {
         (record.quantity > stockQuantity) ? parseInt(record.quantity -= stockQuantity) : (state.portfolioStocks.splice(state.portfolioStocks.indexOf(record), 1));
 
         state.funds += stockPrice * stockQuantity;
+    },
+    'SET_PORTFOLIO': (state, portfolio) => {
+        state.funds = portfolio.funds;
+        state.portfolioStocks = portfolio.stockPortfolio ? portfolio.stockPortfolio : [];
     }
 };
 
