@@ -6,7 +6,7 @@
 
         <hr>
 
-        <b>Your Funds Today: {{ funds }}</b>
+        <b>Your Funds Today: {{ funds | toCurrency }}</b>
     </div>
 </template>
 

@@ -8,18 +8,24 @@ const mutations = {
     'BUY_STOCK': (state, { stockId, stockPrice, stockQuantity }) => {
         // see if stock already exists in portfolio
         const record = state.portfolioStocks.find(element => element.id === stockId);
+
         const pushToPortfolioStocks = state.portfolioStocks.push({
             id: stockId,
             quantity: stockQuantity
         });
-        record ? (record.quantity += stockQuantity) : pushToPortfolioStocks;
-        console.log(record)
 
+        if(record) {
+            record.quantity = parseInt(record.quantity)
+            record.quantity += parseInt(stockQuantity)
+        } else {
+            pushToPortfolioStocks;
+        }
+        
         state.funds -= stockPrice * stockQuantity;
     },
     'SELL_STOCK': (state, { stockId, stockPrice, stockQuantity }) => {
         const record = state.portfolioStocks.find(element => element.id === stockId);
-        (record.quantity > stockQuantity) ? (record.quantity -= stockQuantity) : (state.portfolioStocks.splice(state.portfolioStocks.indexOf(record), 1));
+        (record.quantity > stockQuantity) ? parseInt(record.quantity -= stockQuantity) : (state.portfolioStocks.splice(state.portfolioStocks.indexOf(record), 1));
 
         state.funds += stockPrice * stockQuantity;
     }

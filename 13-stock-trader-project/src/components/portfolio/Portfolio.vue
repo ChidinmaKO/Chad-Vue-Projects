@@ -7,7 +7,7 @@
             <div class="col-sm-6 col-md-4">
                 <button type="button" class="btn btn-primary">
                     Funds:
-                    <span class="badge badge-light">{{ funds }}</span>
+                    <span class="badge badge-light">{{ funds | toCurrency }}</span>
                     <span class="sr-only">Amount of funds</span>
                 </button>
             </div>

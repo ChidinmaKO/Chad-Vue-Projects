@@ -15,6 +15,7 @@
                         placeholder="Quantity" 
                         v-model="quantity" 
                         type="number"
+                        :class="{ danger: insufficientFunds }"
                     >
                 </div>
 
@@ -22,7 +23,7 @@
                     <button 
                         class="btn btn-success" 
                         @click="buyStock" 
-                        :disabled="disableButton()"
+                        :disabled="insufficientFunds || disableButton()"
                     >
                         Buy
                     </button>
@@ -49,7 +50,6 @@
                     stockPrice: this.stock.price,
                     stockQuantity: this.quantity
                 };
-                console.log("stock order: ", order);
                 this.$store.dispatch('buyStock', order)
                 this.quantity = 0;
             },
@@ -57,11 +57,19 @@
                 // `+` is a handy way of converting the string to an integer. It can be used in place of parseInt(num)
                 return (this.quantity <= 0 || !Number.isInteger(+this.quantity));
             }
-            
+        },
+        computed: {
+            insufficientFunds() {
+                const funds = this.$store.getters.funds;
+                return this.quantity * this.stock.price > funds;
+            }
         },
     }
 </script>
 
 <style scoped>
-    
+    .danger {
+        border: 1px solid #ED213A;
+        color: #FF4B2B;
+    }
 </style>

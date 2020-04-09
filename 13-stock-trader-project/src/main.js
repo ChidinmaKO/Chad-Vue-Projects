@@ -4,7 +4,11 @@ import App from './App.vue'
 import { routes } from './routes'
 import { store } from './store/store.js'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+
+Vue.filter('toCurrency', (value) => {
+  return '€' + value.toLocaleString('nl-NL')
+});
 
 const router = new VueRouter({
   routes,

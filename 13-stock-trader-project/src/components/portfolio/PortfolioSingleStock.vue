@@ -15,6 +15,7 @@
                         placeholder="Quantity" 
                         v-model="quantity" 
                         type="number"
+                        :class="{ danger: insufficientQuantity }"
                     >
                 </div>
 
@@ -22,7 +23,7 @@
                     <button 
                         class="btn btn-info" 
                         @click="sellStock" 
-                        :disabled="disableButton()"
+                        :disabled="insufficientQuantity || disableButton()"
                     >
                         Sell
                     </button>
@@ -53,9 +54,7 @@
                     stockPrice: this.stock.price,
                     stockQuantity: this.quantity
                 }
-                console.log("portfolio order: ", order);
                 this.sellPortfolioStock(order);
-                // this.$store.dispatch('sellStock', order);
                 this.quantity = 0;
 
             },
@@ -64,7 +63,17 @@
                 return (this.quantity <= 0 || !Number.isInteger(+this.quantity));
             }
         },
+        computed: {
+            insufficientQuantity() {
+                return this.quantity > this.stock.quantity;
+            }
+        },
     }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .danger {
+        border: 1px solid #ED213A;
+        color: #FF4B2B;
+    }
+</style>
