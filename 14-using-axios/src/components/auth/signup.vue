@@ -3,40 +3,50 @@
     <div class="signup-form">
       <form @submit.prevent="onSubmit">
         <div class="input">
+          <label for="email">Name</label>
+          <input
+            type="name"
+            id="name"
+            v-model="name">
+        </div>
+        <div class="input">
           <label for="email">Mail</label>
           <input
-                  type="email"
-                  id="email"
-                  v-model="email">
+            type="email"
+            id="email"
+            v-model="email">
         </div>
         <div class="input">
           <label for="age">Your Age</label>
           <input
-                  type="number"
-                  id="age"
-                  v-model.number="age">
+            type="number"
+            id="age"
+            v-model.number="age">
         </div>
         <div class="input">
           <label for="password">Password</label>
           <input
-                  type="password"
-                  id="password"
-                  v-model="password">
+            type="password"
+            id="password"
+            v-model="password">
         </div>
         <div class="input">
           <label for="confirm-password">Confirm Password</label>
           <input
-                  type="password"
-                  id="confirm-password"
-                  v-model="confirmPassword">
+            type="password"
+            id="confirm-password"
+            v-model="confirmPassword">
         </div>
         <div class="input">
           <label for="country">Country</label>
           <select id="country" v-model="country">
-            <option value="usa">USA</option>
+            <option value="antarctica">Antarctica</option>
             <option value="india">India</option>
-            <option value="uk">UK</option>
-            <option value="germany">Germany</option>
+            <option value="netherlands">Netherlands</option>
+            <option value="samoa">Samoa</option>
+            <option value="suriname">Suriname</option>
+            <option value="nigeria">Nigeria</option>
+            <option value="usa">USA</option>
           </select>
         </div>
         <div class="hobbies">
@@ -44,14 +54,14 @@
           <button @click="onAddHobby" type="button">Add Hobby</button>
           <div class="hobby-list">
             <div
-                    class="input"
-                    v-for="(hobbyInput, index) in hobbyInputs"
-                    :key="hobbyInput.id">
+              class="input"
+              v-for="(hobbyInput, index) in hobbyInputs"
+              :key="hobbyInput.id">
               <label :for="hobbyInput.id">Hobby #{{ index }}</label>
               <input
-                      type="text"
-                      :id="hobbyInput.id"
-                      v-model="hobbyInput.value">
+                type="text"
+                :id="hobbyInput.id"
+                v-model="hobbyInput.value">
               <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
             </div>
           </div>
@@ -69,14 +79,17 @@
 </template>
 
 <script>
+  import axios from '../../axios-auth.js';
+
   export default {
     data () {
       return {
+        name: '',
         email: '',
         age: null,
         password: '',
         confirmPassword: '',
-        country: 'usa',
+        country: 'antarctica',
         hobbyInputs: [],
         terms: false
       }
@@ -94,6 +107,7 @@
       },
       onSubmit () {
         const formData = {
+          name: this.name,
           email: this.email,
           age: this.age,
           password: this.password,
@@ -103,6 +117,10 @@
           terms: this.terms
         }
         console.log(formData)
+        axios.post('users.json', formData)
+          .then(response => console.log(response))
+          .catch(error => console.log(error))
+        ;
       }
     }
   }
