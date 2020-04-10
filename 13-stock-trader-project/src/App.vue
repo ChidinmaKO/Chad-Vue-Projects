@@ -13,18 +13,22 @@
                 </transition>
             </div>
         </div>
+
+        <app-footer class="footer"></app-footer>
     </div>
 </template>
 
 <script>
     import Header from './components/Header.vue';
+    import Footer from './components/Footer.vue';
 
     export default {
         components: {
             appHeader: Header,
+            appFooter: Footer,
         },
         created() {
-            this.$store.dispatch('initStocks')
+            this.$store.dispatch('initStocks');
         },
     }
 </script>
@@ -33,6 +37,6 @@
     body {
         padding: 30px;
         background-color: #F2F2F2;
-        color: #24243E;
+        color: #232526;
     }
 </style>

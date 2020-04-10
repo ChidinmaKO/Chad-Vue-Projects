@@ -64,8 +64,8 @@
             saveData() {
                 const finalData = {
                     funds: this.funds,
-                    stocks: this.stocks,
-                    stockPortfolio: this.stockPortfolio
+                    stockPortfolio: this.stockPortfolio,
+                    stocks: this.stocks
                 }
                 this.$http.put('data.json', finalData);
             },
@@ -83,12 +83,4 @@
     }
 </script>
 
-<style scoped>
-    /* .blue {
-        background-color: #302B63; 
-    }
-    .navbar-default .navbar-nav>li>a {
-        color: #e7e7e7;
-    } */
-    
-</style>
+<style scoped></style>

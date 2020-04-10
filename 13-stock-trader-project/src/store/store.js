@@ -11,11 +11,10 @@ export const store = new Vuex.Store({
             Vue.http.get('data.json').then(response => response.json()).then(data => {
                 if(data) {
                     const funds = data.funds;
-                    const stocks = data.stocks;
                     const stockPortfolio = data.stockPortfolio;
+                    const stocks = data.stocks;
 
                     const portfolio = {
-                        // see portfolio.js
                         funds,
                         stockPortfolio,
                     };
@@ -23,11 +22,11 @@ export const store = new Vuex.Store({
                     commit('SET_STOCKS', stocks);
                     commit('SET_PORTFOLIO', portfolio);
                 }
-            })
+            });
         }
     },
     modules: {
         stocksStore,
         portfolioStore
     }
-})
+});

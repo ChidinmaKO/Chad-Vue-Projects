@@ -16,10 +16,10 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    import SingleStock from "./SingleStock.vue";
+    import SingleStock from './SingleStock.vue';
 
     export default {
-        name: "Stocks",
+        name: 'Stocks',
 
         components: {
             SingleStock
