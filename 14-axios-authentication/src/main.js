@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import axios from 'axios'
+import axios from 'axios'
 
 import router from './router'
 import store from './store'
 
-// axios.defaults.baseURL = 'https://vue-axios-auth-app.firebaseio.com/'
+axios.defaults.baseURL = 'https://vue-axios-auth-app.firebaseio.com/';
+axios.defaults.headers.get['Content-Type'] = 'application/json';
+
 // const requestInterceptor = axios.interceptors.request.use(config => {
 //   console.log('request config', config);
 //   return config;

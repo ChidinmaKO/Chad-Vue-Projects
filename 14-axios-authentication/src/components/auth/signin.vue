@@ -7,14 +7,14 @@
           <input
                   type="email"
                   id="email"
-                  v-model="email">
+                  v-model="userDetail.email">
         </div>
         <div class="input">
           <label for="password">Password</label>
           <input
                   type="password"
                   id="password"
-                  v-model="password">
+                  v-model="userDetail.password">
         </div>
         <div class="submit">
           <button type="submit">Submit</button>
@@ -28,17 +28,24 @@
   export default {
     data () {
       return {
-        email: '',
-        password: ''
+        userDetail: {
+          email: '',
+          password: ''
+        }
       }
     },
     methods: {
       onSubmit () {
         const formData = {
-          email: this.email,
-          password: this.password,
+          email: this.userDetail.email,
+          password: this.userDetail.password,
         }
         console.log(formData)
+        this.$store.dispatch('signIn', {
+          email: formData.email,
+          password: formData.password
+        });
+        this.userDetail = {};
       }
     }
   }

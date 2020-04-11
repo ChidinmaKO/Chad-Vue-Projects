@@ -7,39 +7,39 @@
           <input
             type="name"
             id="name"
-            v-model="name">
+            v-model="userDetails.name">
         </div>
         <div class="input">
           <label for="email">Mail</label>
           <input
             type="email"
             id="email"
-            v-model="email">
+            v-model="userDetails.email">
         </div>
         <div class="input">
           <label for="age">Your Age</label>
           <input
             type="number"
             id="age"
-            v-model.number="age">
+            v-model.number="userDetails.age">
         </div>
         <div class="input">
           <label for="password">Password</label>
           <input
             type="password"
             id="password"
-            v-model="password">
+            v-model="userDetails.password">
         </div>
         <div class="input">
           <label for="confirm-password">Confirm Password</label>
           <input
             type="password"
             id="confirm-password"
-            v-model="confirmPassword">
+            v-model="userDetails.confirmPassword">
         </div>
         <div class="input">
           <label for="country">Country</label>
-          <select id="country" v-model="country">
+          <select id="country" v-model="userDetails.country">
             <option value="antarctica">Antarctica</option>
             <option value="india">India</option>
             <option value="netherlands">Netherlands</option>
@@ -55,19 +55,19 @@
           <div class="hobby-list">
             <div
               class="input"
-              v-for="(hobbyInput, index) in hobbyInputs"
+              v-for="(hobbyInput, index) in userDetails.hobbyInputs"
               :key="hobbyInput.id">
               <label :for="hobbyInput.id">Hobby #{{ index }}</label>
               <input
                 type="text"
                 :id="hobbyInput.id"
-                v-model="hobbyInput.value">
+                v-model="userDetails.hobbyInput.value">
               <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
             </div>
           </div>
         </div>
         <div class="input inline">
-          <input type="checkbox" id="terms" v-model="terms">
+          <input type="checkbox" id="terms" v-model="userDetails.terms">
           <label for="terms">Accept Terms of Use</label>
         </div>
         <div class="submit">
@@ -79,19 +79,19 @@
 </template>
 
 <script>
-  import axios from '../../axios-auth.js';
-
   export default {
     data () {
       return {
-        name: '',
-        email: '',
-        age: null,
-        password: '',
-        confirmPassword: '',
-        country: 'antarctica',
-        hobbyInputs: [],
-        terms: false
+        userDetails: {
+          name: '',
+          email: '',
+          age: null,
+          password: '',
+          confirmPassword: '',
+          country: 'antarctica',
+          hobbyInputs: [],
+          terms: false
+        }
       }
     },
     methods: {
@@ -107,20 +107,19 @@
       },
       onSubmit () {
         const formData = {
-          name: this.name,
-          email: this.email,
-          age: this.age,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          country: this.country,
-          hobbies: this.hobbyInputs.map(hobby => hobby.value),
-          terms: this.terms
-        }
+          name: this.userDetails.name,
+          email: this.userDetails.email,
+          age: this.userDetails.age,
+          password: this.userDetails.password,
+          confirmPassword: this.userDetails.confirmPassword,
+          country: this.userDetails.country,
+          hobbies: this.userDetails.hobbyInputs.map(hobby => hobby.value),
+          terms: this.userDetails.terms
+        };
         console.log(formData)
-        axios.post('users.json', formData)
-          .then(response => console.log(response))
-          .catch(error => console.log(error))
-        ;
+        this.$store.dispatch('signUp', formData);
+        
+        this.userDetails = {};
       }
     }
   }
