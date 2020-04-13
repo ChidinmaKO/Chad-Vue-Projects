@@ -8,13 +8,17 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     idToken: null,
-    userId: null
+    userId: null,
+    user: null
   },
   mutations: {
     'AUTH_USER': (state, userData) => {
       state.idToken = userData.token,
       state.userId = userData.userId
     },
+    'STORE_USER': (state, user) => {
+      state.user = user
+    }
   },
   actions: {
     signUp({ dispatch, commit }, signUpData) {
@@ -47,12 +51,18 @@ const store = new Vuex.Store({
         }).catch(error => console.log(error));
     },
 
-    storeUserData({ commit }, userData) {
-      globalAxios.post('users.json', authData).then(response => console.log(response)).catch(console.error());
+    storeUserData({ commit, state }, userData) {
+      if(!state.idToken) {
+        return;
+      }
+      globalAxios.post('/users/' + state.userId + '.json?auth=' + state.idToken, userData).then(response => console.log(response)).catch(console.error());
     },
 
-    getUserData({ commit}, userData) {
-      globalAxios.get('users.json')
+    fetchUser({ commit, state }) {
+      if(!state.idToken) {
+        return;
+      }
+      globalAxios.get('/users/' + state.userId + '.json?auth=' + state.idToken)
         .then(response => {
           const usersArray = [];
           const data = response.data
@@ -61,15 +71,17 @@ const store = new Vuex.Store({
             user.id = key
             usersArray.push(user)
           }
-          this.signedOut = false;
-          this.name = usersArray[usersArray.length -1].name;
+          const active_user = usersArray[usersArray.length -1];
+          commit('STORE_USER', active_user);
         })
         .catch(console.error());
     }
   },
   getters: {
-
+    user: state => {
+      return state.user;
+    }
   }
-})
+});
 
 export default store;

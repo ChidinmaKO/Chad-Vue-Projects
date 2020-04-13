@@ -56,7 +56,8 @@
             <div
               class="input"
               v-for="(hobbyInput, index) in userDetails.hobbyInputs"
-              :key="hobbyInput.id">
+              :key="hobbyInput.id"
+            >
               <label :for="hobbyInput.id">Hobby #{{ index }}</label>
               <input
                 type="text"
@@ -99,8 +100,9 @@
         const newHobby = {
           id: Math.random() * Math.random() * 1000,
           value: ''
-        }
-        this.hobbyInputs.push(newHobby)
+        };
+        console.log(newHobby);
+        this.hobbyInputs.push(newHobby);
       },
       onDeleteHobby (id) {
         this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
@@ -116,7 +118,6 @@
           hobbies: this.userDetails.hobbyInputs.map(hobby => hobby.value),
           terms: this.userDetails.terms
         };
-        console.log(formData)
         this.$store.dispatch('signUp', formData);
         
         this.userDetails = {};
