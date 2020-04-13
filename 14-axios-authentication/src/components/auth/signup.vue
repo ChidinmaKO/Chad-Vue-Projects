@@ -62,7 +62,7 @@
               <input
                 type="text"
                 :id="hobbyInput.id"
-                v-model="userDetails.hobbyInput.value">
+                v-model="hobbyInput.value">
               <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
             </div>
           </div>
@@ -101,11 +101,10 @@
           id: Math.random() * Math.random() * 1000,
           value: ''
         };
-        console.log(newHobby);
-        this.hobbyInputs.push(newHobby);
+        this.userDetails.hobbyInputs.push(newHobby);
       },
       onDeleteHobby (id) {
-        this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
+        this.userDetails.hobbyInputs = this.userDetails.hobbyInputs.filter(hobby => hobby.id !== id)
       },
       onSubmit () {
         const formData = {

@@ -9,7 +9,7 @@
   export default {
     methods: {
       dashboardMsg() {
-        return this.userName ? "Welcome " + this.userName : "You should only get here if you're authenticated!";
+        return this.userName ? "Welcome " + this.userName : "";
       }
     },
     computed: {

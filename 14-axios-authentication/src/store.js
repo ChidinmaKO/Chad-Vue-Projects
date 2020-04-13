@@ -38,13 +38,21 @@ const store = new Vuex.Store({
             token: response.data.idToken,
             userId: response.data.localId
           });
+
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + (response.data.expiresIn * 1000));
+          localStorage.setItem('token', response.data.idToken);
+          localStorage.setItem('userId', response.data.localId);
+          localStorage.setItem('expirationDate', expirationDate);
+
           dispatch('storeUserData', signUpData);
+          dispatch('setLogOutTimer', response.data.expiresIn);
 
           console.log(response)
         }).catch(error => console.log(error));
     },
 
-    signIn({ commit }, signInData) {
+    signIn({ commit, dispatch }, signInData) {
       axios.post(':signInWithPassword?key=AIzaSyB5XUA97t6jR72c3Dn4nmeIRMFGLs8oLRI', {
           email: signInData.email,
           password: signInData.password,
@@ -55,7 +63,16 @@ const store = new Vuex.Store({
             userId: response.data.localId
           });
           router.replace({ name: 'dashboard' });
+
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + (response.data.expiresIn * 1000));
+          localStorage.setItem('token', response.data.idToken);
+          localStorage.setItem('userId', response.data.localId);
+          localStorage.setItem('expirationDate', expirationDate);
+
           console.log(response);
+          dispatch('setLogOutTimer', response.data.expiresIn);
+
         }).catch(error => console.log(error));
     },
 
@@ -87,9 +104,38 @@ const store = new Vuex.Store({
 
     logOutUser({ commit }) {
       commit('LOG_OUT_USER');
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('expirationDate');
+      
       router.replace({ name: 'signin' });
+    },
+
+    setLogOutTimer({ commit }, expirationTime) {
+      setTimeout(() => {
+        commit('LOG_OUT_USER');
+        router.replace({ name: 'signin' });
+      }, expirationTime * 1000);
+    },
+
+    tryAutoLogin({ commit }) {
+      const token = localStorage.getItem('token');
+      if(!token) { return; }
+
+      const userId =  localStorage.getItem('userId');
+
+      const expirationDate = localStorage.getItem('expirationDate');
+      const now = new Date();
+      if(now >= expirationDate) { return; }
+      commit('AUTH_USER', {
+        token: token,
+        userId: userId
+      });
+      router.replace({ name: 'dashboard' });
     }
   },
+
   getters: {
     user: state => {
       return state.user;
