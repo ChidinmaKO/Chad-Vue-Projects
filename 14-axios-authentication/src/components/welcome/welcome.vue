@@ -1,13 +1,34 @@
 <template>
   <div id="welcome">
     <h1>Time to learn something new!</h1>
-    <p>You found the best place to learn - and now you're just one sign in (or sign up) away from it!</p>
-    <div class="cta">
+    <p>{{ welcomeMsg() }}</p>
+    <div class="cta" v-if="!isAuthenticated">
       <router-link to="/signup">Sign Up</router-link>
       <router-link to="/signin">Sign In</router-link>
     </div>
   </div>
 </template>
+
+<script>
+  export default {
+    data() {
+      return {
+        msg1: "You found the best place to learn - look around for a new skill to learn",
+        msg2: "You found the best place to learn - and now you're just one sign in (or sign up) away from it!"
+      }
+    },
+    computed: {
+      isAuthenticated() {
+        return this.$store.getters.isAuthenticated;
+      }
+    },
+    methods: {
+      welcomeMsg() {
+        return this.isAuthenticated ? this.msg1 : this.msg2;
+      }
+    },
+  }
+</script>
 
 <style scoped>
   #welcome {

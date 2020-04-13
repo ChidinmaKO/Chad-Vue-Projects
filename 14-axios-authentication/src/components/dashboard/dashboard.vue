@@ -1,13 +1,17 @@
 <template>
   <div id="dashboard">
     <h1>This is the dashboard!</h1>
-    <p v-if="userName">Welcome {{ userName }}</p>
-    <p v-else>You should only get here if you're authenticated!</p>
+    <p>{{ dashboardMsg() }}</p>
   </div>
 </template>
 
 <script>
   export default {
+    methods: {
+      dashboardMsg() {
+        return this.userName ? "Welcome " + this.userName : "You should only get here if you're authenticated!";
+      }
+    },
     computed: {
       userName() {
         return this.$store.getters.user ? this.$store.getters.user.name : false;
@@ -26,5 +30,6 @@
 
   p {
     color: red;
+    font-weight: 700;
   }
 </style>

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from './router.js';
 import axios from './axios-auth.js';
 import globalAxios from 'axios';
 
@@ -11,6 +12,7 @@ const store = new Vuex.Store({
     userId: null,
     user: null
   },
+
   mutations: {
     'AUTH_USER': (state, userData) => {
       state.idToken = userData.token,
@@ -18,8 +20,13 @@ const store = new Vuex.Store({
     },
     'STORE_USER': (state, user) => {
       state.user = user
+    },
+    'LOG_OUT_USER': (state) => {
+      state.idToken = null,
+      state.userId = null
     }
   },
+
   actions: {
     signUp({ dispatch, commit }, signUpData) {
       axios.post(':signUp?key=AIzaSyB5XUA97t6jR72c3Dn4nmeIRMFGLs8oLRI', {
@@ -47,7 +54,8 @@ const store = new Vuex.Store({
             token: response.data.idToken,
             userId: response.data.localId
           });
-          console.log(response)
+          router.replace({ name: 'dashboard' });
+          console.log(response);
         }).catch(error => console.log(error));
     },
 
@@ -75,11 +83,19 @@ const store = new Vuex.Store({
           commit('STORE_USER', active_user);
         })
         .catch(console.error());
+    },
+
+    logOutUser({ commit }) {
+      commit('LOG_OUT_USER');
+      router.replace({ name: 'signin' });
     }
   },
   getters: {
     user: state => {
       return state.user;
+    },
+    isAuthenticated: state => {
+      return state.idToken !== null;
     }
   }
 });

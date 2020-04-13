@@ -40,7 +40,6 @@
           email: this.userDetail.email,
           password: this.userDetail.password,
         }
-        console.log(formData)
         this.$store.dispatch('signIn', {
           email: formData.email,
           password: formData.password
