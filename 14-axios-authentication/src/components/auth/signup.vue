@@ -9,12 +9,15 @@
             id="name"
             v-model="userDetails.name">
         </div>
-        <div class="input">
+        <div class="input" :class="{ 'is-invalid': $v.userDetails.email.$error }">
           <label for="email">Mail</label>
           <input
             type="email"
             id="email"
+            @blur="$v.userDetails.email.$touch()"
             v-model="userDetails.email">
+          <span class="is-invalid" v-if="!$v.userDetails.email.required">Email is required</span>
+          <span class="is-invalid" v-if="!$v.userDetails.email.email">Email is invalid</span>
         </div>
         <div class="input">
           <label for="age">Your Age</label>
@@ -80,6 +83,8 @@
 </template>
 
 <script>
+  import { required, email } from 'vuelidate/lib/validators';
+
   export default {
     data () {
       return {
@@ -93,6 +98,11 @@
           hobbyInputs: [],
           terms: false
         }
+      }
+    },
+    validations: {
+      userDetails: {
+        email: { required, email }
       }
     },
     methods: {
@@ -169,6 +179,22 @@
   .input select {
     border: 1px solid #ccc;
     font: inherit;
+  }
+
+  .input.is-invalid input {
+    background-color: #FFC99A;
+    border: 1px solid #ED213A;
+    color: #FF4B2B;
+  }
+
+  .input.is-invalid label{
+    color: #ED213A;
+  }
+
+  span.is-invalid {
+    color: #ED213A;
+    font-size: 14px;
+    letter-spacing: .5px;
   }
 
   .hobbies button {
