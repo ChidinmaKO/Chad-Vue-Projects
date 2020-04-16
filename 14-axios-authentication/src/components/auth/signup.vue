@@ -2,12 +2,14 @@
   <div id="signup">
     <div class="signup-form">
       <form @submit.prevent="onSubmit">
-        <div class="input">
+        <div class="input" :class="{ 'is-invalid': $v.userDetails.name.$error }">
           <label for="email">Name</label>
           <input
             type="name"
             id="name"
+            @blur="$v.userDetails.name.$touch()"
             v-model="userDetails.name">
+          <span class="is-invalid" v-if="!$v.userDetails.name.required">Name is required</span>
         </div>
         <div class="input" :class="{ 'is-invalid': $v.userDetails.email.$error }">
           <label for="email">Mail</label>
@@ -19,26 +21,34 @@
           <span class="is-invalid" v-if="!$v.userDetails.email.required">Email is required</span>
           <span class="is-invalid" v-if="!$v.userDetails.email.email">Email is invalid</span>
         </div>
-        <div class="input">
+        <div class="input" :class="{ 'is-invalid': $v.userDetails.age.$error }">
           <label for="age">Your Age</label>
           <input
             type="number"
             id="age"
+            @blur="$v.userDetails.age.$touch()"
             v-model.number="userDetails.age">
+          <span class="is-invalid" v-if="!$v.userDetails.age.required">Age is required</span>
+          <span class="is-invalid" v-if="!$v.userDetails.age.minValue">{{ $v.userDetails.age.$params.minValue.min }}+ only</span>
         </div>
-        <div class="input">
+        <div class="input" :class="{ 'is-invalid': $v.userDetails.password.$error }">
           <label for="password">Password</label>
           <input
             type="password"
             id="password"
+            @blur="$v.userDetails.password.$touch()"
             v-model="userDetails.password">
+          <span class="is-invalid" v-if="!$v.userDetails.password.required">Password is required</span>
+          <span class="is-invalid" v-if="!$v.userDetails.password.minLength">Password must be at least 6 characters</span>
         </div>
-        <div class="input">
+        <div class="input" :class="{ 'is-invalid': $v.userDetails.confirmPassword.$error }">
           <label for="confirm-password">Confirm Password</label>
           <input
             type="password"
             id="confirm-password"
+            @blur="$v.userDetails.confirmPassword.$touch()"
             v-model="userDetails.confirmPassword">
+          <span class="is-invalid" v-if="!$v.userDetails.confirmPassword.sameAsPassword">Passwords must match</span>
         </div>
         <div class="input">
           <label for="country">Country</label>
@@ -59,23 +69,35 @@
             <div
               class="input"
               v-for="(hobbyInput, index) in userDetails.hobbyInputs"
+              :class="{ 'is-invalid': $v.userDetails.hobbyInputs.$each[index].$error }"
               :key="hobbyInput.id"
             >
               <label :for="hobbyInput.id">Hobby #{{ index }}</label>
               <input
                 type="text"
                 :id="hobbyInput.id"
+                @blur="$v.userDetails.hobbyInputs.$each[index].value.$touch()"
                 v-model="hobbyInput.value">
               <button @click="onDeleteHobby(hobbyInput.id)" type="button">X</button>
             </div>
+            <span class="is-invalid" v-if="!$v.userDetails.hobbyInputs.minLength">
+              You have to specify at least {{ $v.userDetails.hobbyInputs.$params.minLength.min }} hobbies.
+            </span>
+            <span class="is-invalid" v-if="!$v.userDetails.hobbyInputs.required">
+              Please add your hobbies
+            </span>
           </div>
         </div>
-        <div class="input inline">
-          <input type="checkbox" id="terms" v-model="userDetails.terms">
+        <div class="input inline" :class="{ 'is-invalid': $v.userDetails.terms.$invalid }">
+          <input 
+            type="checkbox" 
+            id="terms" 
+            @change="$v.userDetails.terms.$touch()"
+            v-model="userDetails.terms">
           <label for="terms">Accept Terms of Use</label>
         </div>
         <div class="submit">
-          <button type="submit">Submit</button>
+          <button type="submit" :disabled="$v.$invalid">Submit</button>
         </div>
       </form>
     </div>
@@ -83,7 +105,8 @@
 </template>
 
 <script>
-  import { required, email } from 'vuelidate/lib/validators';
+  import { required, email, numeric, minValue, minLength, sameAs, requiredUnless } from 'vuelidate/lib/validators';
+  import globalAxios from 'axios';
 
   export default {
     data () {
@@ -102,7 +125,42 @@
     },
     validations: {
       userDetails: {
-        email: { required, email }
+        name: { required },
+        email: { 
+          required, 
+          email
+        },
+        age: { 
+          required, 
+          numeric, 
+          minValue: minValue(18) 
+        },
+        password: {
+          required,
+          minLength: minLength(6)
+        },
+        confirmPassword: {
+          sameAsPassword: sameAs('password')
+        },
+        hobbyInputs: {
+          required,
+          minLength: minLength(2),
+          $each: {
+            value: {
+              required,
+              minLength: minLength(5)
+            }
+          }
+        },
+        terms: {
+          required,
+          // checked(value) {
+          //   return this.userDetails.country.toLowerCase() === 'netherlands' ? true : value;
+          // }
+          sameAs: sameAs((vm) => {
+            return vm.country.toLowerCase() === 'netherlands' ? vm.terms : true;
+          })
+        }
       }
     },
     methods: {
@@ -187,7 +245,7 @@
     color: #FF4B2B;
   }
 
-  .input.is-invalid label{
+  .input.is-invalid label, .input.inline.is-invalid label {
     color: #ED213A;
   }
 
@@ -195,6 +253,7 @@
     color: #ED213A;
     font-size: 14px;
     letter-spacing: .5px;
+    user-select: none;
   }
 
   .hobbies button {
